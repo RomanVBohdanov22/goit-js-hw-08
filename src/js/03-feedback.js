@@ -42,12 +42,13 @@ const refsToForm = {
     email: document.querySelector('.feedback-form input'),
 };
 
+onLoadForm();
 refsToForm.form.addEventListener('submit', onFormSubmit);
 refsToForm.form.addEventListener('input', _.throttle(onInput, 500));
 refsToForm.form.addEventListener('input', e =>
 { toData[e.target.name] = e.target.value; });
 
-onLoadForm();
+
 
 function onFormSubmit(e) { 
     e.preventDefault();
