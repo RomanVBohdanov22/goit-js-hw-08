@@ -45,8 +45,8 @@ const refsToForm = {
 onLoadForm();
 refsToForm.form.addEventListener('submit', onFormSubmit);
 refsToForm.form.addEventListener('input', _.throttle(onInput, 500));
-refsToForm.form.addEventListener('input', e =>
-{ toData[e.target.name] = e.target.value; });
+//refsToForm.form.addEventListener('input', e =>
+//{ toData[e.target.name] = e.target.value; });
 
 
 
@@ -57,7 +57,8 @@ function onFormSubmit(e) {
     localStorage.removeItem(STORAGE_KEY);
 }
 function onInput(e)
-{
+{   
+    toData[e.target.name] = e.target.value;
     return save(STORAGE_KEY, toData);
 }
 
