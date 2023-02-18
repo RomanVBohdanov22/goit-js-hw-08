@@ -2,11 +2,85 @@
 import Player from '@vimeo/player';
 import _ from 'lodash';
 
-//import _ from 'lodash';
-//const result = _.add(2, 3);
-//console.log(result); // 5
-//alert(result);
-//var throttle = require('_.throttle');
+const STORAGE_KEY = "videoplayer-current-time";
+
+const iframe = document.querySelector('iframe');
+const player = new Player(iframe);
+
+
+const currentTime = function (data) {
+    let time = JSON.stringify(data.seconds);
+    console.log(time);
+    localStorage.setItem(STORAGE_KEY, time);    
+};
+const readCurrentTimeFromLocalStorage = function()
+{ 
+    try { 
+        const timeFromStorage = localStorage.getItem(STORAGE_KEY);
+        return timeFromStorage ? JSON.parse(timeFromStorage) : 0.0;
+    }
+    catch (err) { 
+        console.log(err);
+    }
+};
+
+function onLoadTime() { 
+    const time = Number(readCurrentTimeFromLocalStorage());
+    console.log(`Previous time was t= ${time} s`);
+    player.setCurrentTime(time);
+    player.on("timeupdate", _.throttle(currentTime, 1000));
+}
+//player.on("timeupdate", _.throttle(currentTime, 1000));
+onLoadTime();
+
+
+
+
+
+
+
+///////////////// 
+/*В подальших роботах це видалю, але треба для навчання. */
+
+/*player.on('play', function () {
+  console.log("It's plays!");
+});*/
+
+/*player.getVideoTitle().then(function (title) {
+  console.log('title:', title);
+});*/
+
+/* 
+getCurrentTime(): Promise<number, Error>
+
+Get the current playback position in seconds.
+
+player.getCurrentTime().then(function(seconds) {
+    // seconds = the current playback position
+}).catch(function(error) {
+    // an error occurred
+});
+
+setCurrentTime(seconds: number): Promise<number, (RangeError|Error)>
+
+Set the current playback position in seconds. Once playback has started, if the player was paused, it will remain paused. Likewise, if the player was playing, it will resume playing once the video has buffered. Setting the current time before playback has started will cause playback to start.
+
+You can provide an accurate time and the player will attempt to seek to as close to that time as possible. The exact time will be the fulfilled value of the promise.
+
+player.setCurrentTime(30.456).then(function(seconds) {
+    // seconds = the actual time that the player seeked to
+}).catch(function(error) {
+    switch (error.name) {
+        case 'RangeError':
+            // the time was less than 0 or greater than the video’s duration
+            break;
+
+        default:
+            // some other error occurred
+            break;
+    }
+});
+*/
 /*
 <iframe
   id="vimeo-player"
@@ -18,33 +92,5 @@ import _ from 'lodash';
   allow="autoplay; encrypted-media"
 ></iframe>
  */
-
-const iframe = document.querySelector('iframe');
-const player = new Player(iframe);
-
-player.on('play', function () {
-  console.log("It's plays!");
-});
-
-player.getVideoTitle().then(function (title) {
-  console.log('title:', title);
-});
-
-const currentTime = function (data) {
-    /*
-  localStorage.setItem(
-    'videoplayer-current-time',
-    JOSN.stringify(data.seconds)
-  );
-    let time = Number(localStorage.getItem('videoplayer-current-time'));
-  console.log(time);*/
-    let time = data.seconds;
-    console.log(time);
-    //localStorage.setItem('videoplayer-current-time', JOSN.stringify(data.seconds));
-};
-
-player.on("timeupdate", _.throttle(currentTime, 1000));//_.throttle(() => { currentTime }, 1000)); 
-
-//throttle(() => { console.log("Scroll handler call every 300ms");  }, 300)
     
   
