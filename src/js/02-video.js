@@ -18,3 +18,8 @@ import { throttle } from 'lodash';
   allow="autoplay; encrypted-media"
 ></iframe>
  */
+
+const iframe = document.querySelector("iframe");
+const player = new Player(iframe);
+
+player.on('play', function () { console.log("It's works!"); });
