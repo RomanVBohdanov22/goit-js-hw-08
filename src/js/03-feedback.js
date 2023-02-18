@@ -72,8 +72,7 @@ function onLoadForm() {
         });
         //const savedForm = load(STORAGE_KEY);
         //const formKeys = Object.keys(savedForm);
-            /*
-        formKeys.map( element => {
+        /*formKeys.map( element => {
             document.querySelector(
                 `name='${element}'`
             ).value = savedForm[element];
